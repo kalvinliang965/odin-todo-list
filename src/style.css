@@ -31,5 +31,32 @@ body {
     background-color: var(--sidebar-color);
     align-items: stretch;
 
-    
+    display: flex;
+    flex-direction: column;
+}
+
+.svg-container svg {
+    fill: white;
+    width: 20px;
+    height: auto;
+}
+
+.sidebar .item {
+    padding: 10px 20px;
+}
+
+.sidebar > .item:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid white;
+}
+
+.sidebar > .item:first-child .left,  
+.sidebar > .item:first-child .right{
+    display: flex;
+    font-size: 0.75rem;
+    border: 2px solid white;
+    justify-content: center;
+    align-items: center;
 }

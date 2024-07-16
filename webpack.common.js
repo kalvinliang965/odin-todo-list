@@ -12,9 +12,10 @@ module.exports = {
 
     plugins: [
         new HtmlWebpackPlugin({
-            title: "TODO list",
             template: "./src/index.html",
-            inject: "body",
+            filename: "index.html",
+            title: "TODO list",
+            inject: "head",
             scriptLoading: "defer",
         }),
     ],
