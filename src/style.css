@@ -81,9 +81,14 @@ body {
 .sidebar > .item:first-child .left span {
     font-size: 1.25rem;
 }
+
 .menu-btn {
     background-color: inherit;
     border: none;
+    padding: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .menu-btn:hover {
