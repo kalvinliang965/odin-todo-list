@@ -42,6 +42,16 @@ body {
     font-family: Roboto-light, sans-serif;
 }
 
+button {
+    background-color: inherit;
+    border: none;
+}
+
+button:hover {
+    background-color: var(--secondary-color);
+    border-radius: 50px;
+}
+
 .sidebar {
     height: 100%;
     width: 100%;
@@ -139,4 +149,93 @@ body {
     display: flex;
     align-items: center;
     font-family: Roboto-light, sans-serif;
+}
+
+
+/****************** style for the main content ****************/
+
+body > .content {
+    padding: 50px 300px;
+}
+
+body > .content > .header {
+    font-size: 3rem;
+    margin-bottom: 40px;
+}
+
+body > .content > .button-container {
+    margin-bottom: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+body > .content > .button-container > button {
+    padding: 5px 15px;
+    background-color: var(--tertiary-color);
+    color: var(--secondary-text);
+    border: none;
+    border-radius: 35px;
+    font-family: inherit;
+}
+
+body > .content > .button-container > button:hover {
+    background-color: var(--secondary-color);
+}
+
+.content > .content-item-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 100px;
+}
+
+.content-item > .headline {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content-item > .headline > .left {
+    font-family: Roboto-black;
+    font-size: 2rem;
+}
+
+.content-item > .headline > .right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 1.25rem;
+}
+
+hr {
+    margin-bottom: 15px;
+}
+.content-item > .bullet-point {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    padding: 5px 10px;
+    background-color: inherit;
+    border: none;
+    color: var(--primary-text);
+    font-size: 1.1rem;
+    align-items: center;
+}
+
+button#add-content-item {
+    display: flex;
+    gap: 10px;
+    background-color: var(--tertiary-color);
+    border-radius: 35px;
+    padding: 5px 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+button#add-content-item:hover {
+    background-color: var(--secondary-color);
+}
+
+#add-content-item > span {
+    color: var(--secondary-text);
+    font-family: inherit;
+    font-size: 0.8rem;
 }
