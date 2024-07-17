@@ -1,13 +1,5 @@
-import svgfile from "./svgfile";
+import svgHelper from "./svgHelper";
 
-
-function info(type, msg, count) {
-    return {
-        type,
-        msg,
-        count,
-    };
-}
 function load(body) {
 
     const sidebar = document.createElement("div");
@@ -19,21 +11,21 @@ function load(body) {
     
 
     sidebar.appendChild(createItem("Tasks",[
-        info("calendarToday", "Today", 0),
-        info("calendarTomorrow", "Tomorrow", 0),
-        info("calendarWeek", "This Week", 0),
-        info("checkMark", "Completed", 0),
+        svgHelper.info("calendarToday", "Today", 0),
+        svgHelper.info("calendarTomorrow", "Tomorrow", 0),
+        svgHelper.info("calendarWeek", "This Week", 0),
+        svgHelper.info("checkMark", "Completed", 0),
     ]));
 
     sidebar.appendChild(createItem("Projects",[
-        info("folder", "Default", 0),
-        info("add", "Add Project", ""),
+        svgHelper.info("folder", "Default", 0),
+        svgHelper.info("add", "Add Project", ""),
     ]));
 
 
 
     body.insertBefore(sidebar, body.firstChild);
-    load_svg();
+    svgHelper.load();
 }
 
 
@@ -85,41 +77,12 @@ function createItem(header, infos) {
 
     infos.forEach((info) => {
         console.log(info);
-        itemContent.appendChild(createLine(info));    
+        itemContent.appendChild(svgHelper.createSvgContainer(info));    
     })
     item.appendChild(itemContent);
-
     return item;
 }
 
-function createLine(info) {
-    const ret = document.createElement("button");
-    ret.className="line";
-    const content = document.createElement("div");
-    content.className="content";
-    const svg_container = document.createElement("div");
-    svg_container.className="svg-container";
-    svg_container.dataset.type=info.type;
-    content.appendChild(svg_container);
-    const msg = document.createElement("span");
-    msg.textContent=info.msg;
-    content.appendChild(msg);
-    ret.appendChild(content);
-
-    const countContainer = document.createElement("span");
-    countContainer.className="count";
-    countContainer.textContent=info.count;
-    ret.appendChild(countContainer);
-    return ret;
-}
-function load_svg(){
-    document.querySelectorAll(".svg-container").
-                forEach(svg => {
-                    console.log(svg.dataset.type);
-                    svg.innerHTML = svgfile[svg.dataset.type];
-                });
-
-}
 
 
 export default {

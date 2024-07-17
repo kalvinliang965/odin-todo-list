@@ -76,4 +76,50 @@ export default {
         <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
     </svg>
     `,
+
+    load(){
+        document.querySelectorAll(".svg-container").
+                    forEach(svg => {
+                        console.log(svg.dataset.type);
+                        svg.innerHTML = this[svg.dataset.type];
+                    });
+    
+    },
+
+
+    createSvgContainer(info) {
+        const ret = document.createElement("button");
+        ret.className="line";
+        const content = document.createElement("div");
+        content.className="content";
+        const svg_container = document.createElement("div");
+        svg_container.className="svg-container";
+        svg_container.dataset.type=info.type;
+        content.appendChild(svg_container);
+
+        if (info.msg) {
+            const msg = document.createElement("span");
+            msg.textContent=info.msg;
+            content.appendChild(msg);
+        }
+        
+        ret.appendChild(content);
+        
+        if (info.count) {
+            const countContainer = document.createElement("span");
+            countContainer.className="count";
+            countContainer.textContent=info.count;
+            ret.appendChild(countContainer);
+        }
+        
+        return ret;
+    },
+
+    info(type, msg, count) {
+        return {
+            type,
+            msg,
+            count,
+        };
+    },
 }
