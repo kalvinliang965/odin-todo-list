@@ -1,6 +1,6 @@
 import { compareAsc, format } from "date-fns";
 
-export function myDate(value) {
+export default function myDate(value) {
     
     var selectedDate = value.split("-");;
     
