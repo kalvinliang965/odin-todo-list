@@ -2,10 +2,21 @@ import Bulletpoint from "./Bulletpoint.js"
 import svgHelper from "./svgHelper.js";
 
 
-export default function(parent, title, date, priority, tag="Default") {
+export default function(parent, title, date, descriptions, priority, tag="Default") {
 
     // to make the list 1-index
     const bulletpoint_list = [];
+
+    let completed=false;
+
+
+    function setCompleted(bool) {
+        completed=bool;
+    }
+
+    function getCompleted() {
+        return completed;
+    }
 
     /*
         expect
@@ -64,6 +75,12 @@ export default function(parent, title, date, priority, tag="Default") {
         // add the line break
         container.appendChild(document.createElement("hr"));
         parent.appendChild(container);
+
+        if (Array.isArray(descriptions)) {
+            descriptions.forEach(term => {
+                add(term);
+            });
+        }
         svgHelper.load();
     }
 
@@ -108,12 +125,17 @@ export default function(parent, title, date, priority, tag="Default") {
         dateContainer.textContent = date;
         right.appendChild(dateContainer);
 
-        const btn = document.createElement("button");
-        const svg_container = document.createElement("div");
-        svg_container.className="svg-container";
-        svg_container.dataset.type="dots";
-        btn.append(svg_container);
-        right.appendChild(btn);
+        // add complete button
+        const btn_1 = document.createElement("button");
+        btn_1.className="complete-btn";
+        btn_1.textContent="Complete";
+        right.appendChild(btn_1);
+
+        // add remove button
+        const btn_2 = document.createElement("button");
+        btn_2.className="remove-btn";
+        btn_2.textContent="Remove";
+        right.appendChild(btn_2);
 
         headerContainer.appendChild(right);
         return headerContainer;
@@ -158,6 +180,8 @@ export default function(parent, title, date, priority, tag="Default") {
     }
 
     return {
+        setCompleted,
+        getCompleted,
         getTag,
         getTitle,
         getDate,

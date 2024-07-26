@@ -371,3 +371,12 @@ label {
     display: flex;
     gap: 5px;
 }
+
+.complete-btn, .remove-btn {
+    background-color: var(--tertiary-color);
+    border: none;
+    border-radius: 35px;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    color: var(--secondary-text);
+}

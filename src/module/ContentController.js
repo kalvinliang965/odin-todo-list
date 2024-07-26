@@ -14,6 +14,30 @@ export default function(parent) {
     let todoContainer=null;
     let tag = "Default";
 
+    taskDialog.getConfirmBtn().addEventListener("click", () => {
+        const newTodo=TODO(todoContainer.getDom(), taskDialog.getTitle(), taskDialog.getDate(),
+                    taskDialog.getDescriptions(), taskDialog.getPriority(), tag);
+        
+        newTodo.load();
+
+        allTasks.push(newTodo);
+
+        newTodo.getDom().querySelector(".complete-btn").addEventListener("click", () => {
+            newTodo.setCompleted(true);
+            todoContainer.getDom().removeChild(newTodo.getDom());
+        });
+
+        newTodo.getDom().querySelector(".remove-btn").addEventListener("click", ()=>{
+            for (let i = 0; i < allTasks.length; ++i) {
+                if (allTasks[i].getDom() === newTodo.getDom()) {
+                    allTasks.splice(i, 1);
+                }
+            }
+            todoContainer.getDom().removeChild(newTodo.getDom());
+        });
+    });
+    
+    
     function load() {
         // default is to load task that is due by end of today
         load_by_date(endOfToday());
@@ -29,19 +53,6 @@ export default function(parent) {
         taskDialog.reset();
         taskDialog.show();
     }
-
-    taskDialog.getConfirmBtn().addEventListener("click", () => {
-        console.log("confirm btn clicked");
-
-        // element read
-        console.log("title: " + taskDialog.getTitle());
-        taskDialog.getDescriptions().forEach(e => {console.log("bulletpoints: " + e)});
-        console.log("Priority: " + taskDialog.getPriority());
-        console.log("date: " + taskDialog.getDate().toString());
-
-        todoContainer.add(taskDialog.getTitle(), taskDialog.getDate(), 
-            taskDialog.getDescriptions(), taskDialog.getPriority());
-    });
 
 
     function load_add_btn() {

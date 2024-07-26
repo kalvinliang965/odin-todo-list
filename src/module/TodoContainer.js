@@ -27,13 +27,7 @@ export default function(parent) {
     /*
         This function expect to create something like this
     */
-    function add(title, date, descriptions, priority) {
-        const newTODO = TODO(container, title, date, priority);
-        newTODO.load();
-
-        descriptions.forEach(element => {
-            newTODO.add(element);
-        });
+    function add(todo) {
         todo_list.push(newTODO);
     }
 
