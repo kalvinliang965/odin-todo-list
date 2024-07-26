@@ -380,3 +380,8 @@ label {
     font-size: 0.75rem;
     color: var(--secondary-text);
 }
+
+
+.item-content .line.active {
+    background-color: var(--secondary-color);
+}

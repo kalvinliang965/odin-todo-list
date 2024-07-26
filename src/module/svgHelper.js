@@ -92,32 +92,11 @@ export default {
     },
 
 
-    createSvgContainer(info) {
-        const ret = document.createElement("button");
-        ret.className="line";
-        const content = document.createElement("div");
-        content.className="content";
+    createSvgContainer(type) {
         const svg_container = document.createElement("div");
         svg_container.className="svg-container";
-        svg_container.dataset.type=info.type;
-        content.appendChild(svg_container);
-
-        if (info.msg) {
-            const msg = document.createElement("span");
-            msg.textContent=info.msg;
-            content.appendChild(msg);
-        }
-        
-        ret.appendChild(content);
-        
-        if (info.count) {
-            const countContainer = document.createElement("span");
-            countContainer.className="count";
-            countContainer.textContent=info.count;
-            ret.appendChild(countContainer);
-        }
-        
-        return ret;
+        svg_container.dataset.type=type;
+        return svg_container;
     },
 
     info(type, msg, count) {

@@ -8,15 +8,12 @@ import ContentController from "./module/ContentController";
     const body = document.querySelector("body");
     
     
-    SidebarController.load(body);
+    const sidebarController = SidebarController(body);
+    sidebarController.load();
     const menu_btn = document.querySelector(`[data-type="menu"]`);
 
     menu_btn.addEventListener("click", ()=> {
-        SidebarController.hide(body);
+        sidebarController.hide(body);
     });
-
-    const contentContainer = body.querySelector("body > .content");
-    const contentController = ContentController(contentContainer);
-    contentController.load();
 })();
 
