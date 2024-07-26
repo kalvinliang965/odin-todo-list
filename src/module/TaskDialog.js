@@ -16,6 +16,7 @@ export default function() {
     let priority;
 
     
+    
     addBtn.addEventListener("click", ()=> {
         const li = document.createElement("li");
         const input = document.createElement("input");
@@ -23,11 +24,13 @@ export default function() {
         input.value="task";
         li.appendChild(input);
         bulletpoints.append(li);
-    })
+    });
 
-    cancelBtn.addEventListener("click", ()=>{
+    cancelBtn.addEventListener("click", (event)=>{
+        event.preventDefault();
         myForm.reset();
-    })
+        dialog.close();
+    });
 
     confirmBtn.addEventListener("click", read_input);
     
@@ -54,6 +57,9 @@ export default function() {
     }
 
     function show() {
+        // default value of date to TODAY
+        const due_date = myForm.querySelector("#due-date");
+        due_date.value = new Date().toISOString().split('T')[0];
         dialog.showModal();
     }
 
@@ -71,11 +77,28 @@ export default function() {
         return priority;
     }
 
+    const getConfirmBtn = () => {
+        return confirmBtn;
+    }
+
+    const reset = () => {
+        title = undefined;
+        descriptions = [];      
+        date = undefined;
+        priority = undefined;
+
+        while (bulletpoints.children.length > 1) {
+            bulletpoints.removeChild(bulletpoints.lastChild);
+        }
+    }
+
     return {
+        reset,
         show,
         getTitle,
         getDate,
         getDescriptions,
         getPriority,
+        getConfirmBtn,
     }
 }

@@ -1,6 +1,8 @@
 import TODO from "./TODO.js";
 
-export default function(parent, title) {
+
+// this class is primarily for manipulating data inside the content-item-container
+export default function(parent) {
 
     const todo_list = [];
 
@@ -12,12 +14,10 @@ export default function(parent, title) {
     const container = document.createElement("div");
     container.className="content-item-container";
     
+    
+    
     const getDom = () => {
         return container;
-    }
-
-    const getTitle = () => {
-        return title;
     }
     
     function load() {
@@ -27,9 +27,13 @@ export default function(parent, title) {
     /*
         This function expect to create something like this
     */
-    function add(container, title, date, priority) {
+    function add(title, date, descriptions, priority) {
         const newTODO = TODO(container, title, date, priority);
         newTODO.load();
+
+        descriptions.forEach(element => {
+            newTODO.add(element);
+        });
         todo_list.push(newTODO);
     }
 
@@ -52,7 +56,6 @@ export default function(parent, title) {
     }
     return {
         get,
-        getTitle,
         load,
         add,
         remove,

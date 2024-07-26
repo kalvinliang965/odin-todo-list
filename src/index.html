@@ -143,16 +143,16 @@
         <form>
             <p>
                 <label for="title">Task Title: </label>
-                <input type="text" id="title" placeholder="title">
+                <input type="text" id="title" value="Title">
             </p>
 
             <p>TODOs: </p>
 
-            <ul>
-                <li><input type="text" class="bulletpoint" placeholder="task"></li>
+            <ul class="bulletpoints">
+                <li><input type="text"  value="task"></li>
             </ul>
 
-            <button id="taskDialog-add">
+            <button type="button" id="taskDialog-add">
                 <div class="svg-container" data-type="add"></div>
                 <span>Add Task</span>
             </button>
@@ -185,7 +185,7 @@
                     </span>
                     Due:
                 </label>
-                <input id="due-date" type="date" placeholder="MM/DD/YY" pattern="^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(\d{2})$">
+                <input id="due-date" type="date" pattern="^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(\d{2})$">
             </p>
 
             <p>

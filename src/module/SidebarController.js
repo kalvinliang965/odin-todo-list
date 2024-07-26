@@ -14,6 +14,7 @@ function load(body) {
         svgHelper.info("calendarToday", "Today", 0),
         svgHelper.info("calendarTomorrow", "Tomorrow", 0),
         svgHelper.info("calendarWeek", "This Week", 0),
+        svgHelper.info("calendar", "Future", 0),
         svgHelper.info("checkMark", "Completed", 0),
     ]));
 
@@ -21,8 +22,6 @@ function load(body) {
         svgHelper.info("folder", "Default", 0),
         svgHelper.info("add", "Add Project", ""),
     ]));
-
-
 
     body.insertBefore(sidebar, body.firstChild);
     svgHelper.load();
@@ -76,7 +75,7 @@ function createItem(header, infos) {
     itemContent.className = "item-content";
 
     infos.forEach((info) => {
-        console.log(info);
+
         itemContent.appendChild(svgHelper.createSvgContainer(info));    
     })
     item.appendChild(itemContent);

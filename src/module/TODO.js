@@ -2,7 +2,7 @@ import Bulletpoint from "./Bulletpoint.js"
 import svgHelper from "./svgHelper.js";
 
 
-export default function(parent, title, date, priority) {
+export default function(parent, title, date, priority, tag="Default") {
 
     // to make the list 1-index
     const bulletpoint_list = [];
@@ -14,6 +14,10 @@ export default function(parent, title, date, priority) {
     const container = document.createElement("div");
     container.className="content-item";
     
+    const getTag = () => {
+        return tag;
+    }
+
     const getDom = () => {
         return container;
     }
@@ -55,9 +59,12 @@ export default function(parent, title, date, priority) {
     */
     function load() {
         const headerContainer = createHeader();
+        console.log(headerContainer);
         container.appendChild(headerContainer);
         // add the line break
-        parent.appendChild(document.createElement("hr"));
+        container.appendChild(document.createElement("hr"));
+        parent.appendChild(container);
+        svgHelper.load();
     }
 
     /*
@@ -89,6 +96,7 @@ export default function(parent, title, date, priority) {
 
         const left = document.createElement("div");
         left.className="left";
+        
         left.textContent=title;
         headerContainer.appendChild(left);
 
@@ -100,7 +108,12 @@ export default function(parent, title, date, priority) {
         dateContainer.textContent = date;
         right.appendChild(dateContainer);
 
-        right.appendChild(svgHelper.createSvgContainer(svgHelper.info(dots)));
+        const btn = document.createElement("button");
+        const svg_container = document.createElement("div");
+        svg_container.className="svg-container";
+        svg_container.dataset.type="dots";
+        btn.append(svg_container);
+        right.appendChild(btn);
 
         headerContainer.appendChild(right);
         return headerContainer;
@@ -145,6 +158,7 @@ export default function(parent, title, date, priority) {
     }
 
     return {
+        getTag,
         getTitle,
         getDate,
         get,

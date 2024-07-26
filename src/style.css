@@ -212,12 +212,14 @@ hr {
     width: 100%;
     display: flex;
     gap: 20px;
-    padding: 5px 10px;
-    background-color: inherit;
+    padding: 10px 20px;
+    background-color: var(--tertiary-color);
+    border-radius: 35px;
     border: none;
     color: var(--primary-text);
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 button#add-content-item {

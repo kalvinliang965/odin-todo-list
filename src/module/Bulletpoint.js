@@ -16,9 +16,11 @@ export default function(parent, description) {
         return dom;
     }
 
+
     function load() {
-        parent.appendChild(dom());
+        parent.appendChild(dom);
     }
+    
     return {
         getDom,
         load,
