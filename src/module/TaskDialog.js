@@ -1,4 +1,5 @@
-import myDate from "./myDate.js";
+
+import {format} from "date-fns";
 
 export default function() {
 
@@ -44,13 +45,13 @@ export default function() {
             descriptions.push(inputElement.value);
         });
         priority = myForm.querySelector("#priority").value;
-        date = myDate(myForm.querySelector("#due-date").value);
+        date = new Date(myForm.querySelector("#due-date").value);
 
         // element read
         console.log("title: " + title);
         descriptions.forEach(e => {console.log("bulletpoints: " + e)});
         console.log("Priority: " + priority);
-        console.log("date: " + date.toString());
+        console.log("date: " + format(date, "MM-dd-yyyy"));
 
         myForm.reset();
         dialog.close();

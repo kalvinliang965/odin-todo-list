@@ -94,18 +94,18 @@ export default function(parent) {
     }
     
     
-    function load_by_date(time) {
+    function load_by_date(date) {
 
-        if (isToday(time)) {
+        if (isToday(date)) {
             load_header("Today");
             todoContainer = TodoContainer(parent);
             todoContainer.load();
 
             // get data from all allTasks..
 
-        } else if (isThisWeek(time)) {
+        } else if (isThisWeek(date)) {
 
-        } else if (isTomorrow(time)) {
+        } else if (isTomorrow(date)) {
 
         } else {
             // future

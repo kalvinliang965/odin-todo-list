@@ -1,6 +1,6 @@
 import Bulletpoint from "./Bulletpoint.js"
 import svgHelper from "./svgHelper.js";
-
+import {format} from "date-fns";
 
 export default function(parent, title, date, descriptions, priority, tag="Default") {
 
@@ -38,7 +38,7 @@ export default function(parent, title, date, descriptions, priority, tag="Defaul
     }
 
     const getDate = () => {
-        return date.toString();
+        return date;
     }
 
     const getPriority = () => {
@@ -122,7 +122,7 @@ export default function(parent, title, date, descriptions, priority, tag="Defaul
 
         const dateContainer = document.createElement("div");
         dateContainer.className = "date";
-        dateContainer.textContent = date;
+        dateContainer.textContent = format(date, "MM/dd/yyyy");
         right.appendChild(dateContainer);
 
         // add complete button

@@ -14,7 +14,7 @@ function load(body) {
         svgHelper.info("calendarToday", "Today", 0),
         svgHelper.info("calendarTomorrow", "Tomorrow", 0),
         svgHelper.info("calendarWeek", "This Week", 0),
-        svgHelper.info("calendar", "Future", 0),
+        svgHelper.info("calendar", "Planned", 0),
         svgHelper.info("checkMark", "Completed", 0),
     ]));
 
