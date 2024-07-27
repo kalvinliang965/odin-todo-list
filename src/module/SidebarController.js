@@ -1,5 +1,7 @@
 import svgHelper from "./svgHelper";
 import ContentController from "./ContentController.js";
+import { endOfTomorrow, addWeeks, startOfWeek } from "date-fns";
+import DATE from "./DATE.js";
 
 export default function(parent) {
 
@@ -62,21 +64,25 @@ export default function(parent) {
             console.log("Today btn is clicked");
             todayBtn.className="line active";
             reset_tab_except(todayBtn, tab_lst);
+            contentController.load_by_date(DATE.today);
         });
         tomorrowBtn.addEventListener("click", () => {
             console.log("tomorrow btn is clicked");
             tomorrowBtn.className="line active";
             reset_tab_except(tomorrowBtn, tab_lst);
+            contentController.load_by_date(DATE.tomorrow);
         });
         thisWeekBtn.addEventListener("click", () => {
             console.log("this week btn is clicked");
             thisWeekBtn.className="line active";
             reset_tab_except(thisWeekBtn, tab_lst);
+            contentController.load_by_date(DATE.thisWeek);
         });
         plannedBtn.addEventListener("click", () => {
             console.log("planned btn is clicked");
             plannedBtn.className="line active";
             reset_tab_except(plannedBtn, tab_lst);
+            contentController.load_by_date(DATE.planned);
         });
         completedBtn.addEventListener("click", () => {
             console.log("completed btn is clicked");

@@ -1,5 +1,5 @@
 
-import {format} from "date-fns";
+import {format, endOfDay} from "date-fns";
 
 export default function() {
 
@@ -45,12 +45,19 @@ export default function() {
             descriptions.push(inputElement.value);
         });
         priority = myForm.querySelector("#priority").value;
-        date = new Date(myForm.querySelector("#due-date").value);
+
+        const date_list = myForm.querySelector("#due-date").value.split("-");
+        const year = date_list[0];
+        const month = date_list[1];
+        const day = date_list[2];
+        // MONTH is 0-index
+        date = new Date(year, month - 1, day);
 
         // element read
         console.log("title: " + title);
         descriptions.forEach(e => {console.log("bulletpoints: " + e)});
         console.log("Priority: " + priority);
+        console.log(date);
         console.log("date: " + format(date, "MM-dd-yyyy"));
 
         myForm.reset();
@@ -60,7 +67,7 @@ export default function() {
     function show() {
         // default value of date to TODAY
         const due_date = myForm.querySelector("#due-date");
-        due_date.value = new Date().toISOString().split('T')[0];
+        due_date.value = format(endOfDay(new Date()), "yyyy-MM-dd");
         dialog.showModal();
     }
 

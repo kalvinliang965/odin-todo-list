@@ -28,7 +28,8 @@ export default function(parent) {
         This function expect to create something like this
     */
     function add(todo) {
-        todo_list.push(newTODO);
+        container.appendChild(todo.getDom());
+        todo_list.push(todo);
     }
 
     function remove(index) {
