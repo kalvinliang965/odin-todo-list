@@ -88,6 +88,7 @@ export default function(parent) {
             console.log("completed btn is clicked");
             completedBtn.className="line active";
             reset_tab_except(completedBtn, tab_lst);
+            contentController.load_completed();
         });
 
         sidebar.appendChild(createItem("Tasks",[

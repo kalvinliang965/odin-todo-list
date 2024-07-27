@@ -114,6 +114,19 @@ export default function(parent) {
     }
     
     
+    function load_completed() {
+        clear();
+
+        load_header("Completed");
+
+        todoContainer = TodoContainer(parent);
+        todoContainer.load();
+    
+        allTasks.filter(task => task.getCompleted()).forEach((task) => {
+            todoContainer.add(task);
+        });
+    }
+
     function load_by_date(date) {
         clear();
 
@@ -210,6 +223,7 @@ export default function(parent) {
     return {
         load_by_date,
         load_by_tag,
+        load_completed,
         load,
         clear,
     }
