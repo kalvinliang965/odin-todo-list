@@ -263,7 +263,7 @@ dialog {
     left: 50%;
     transform: translate(-50%,-50%);
     border-radius: 15px;
-    padding: 50px 25px;
+    padding: 25px 25px;
     background-color: var(--secondary-color);
     border: 2px solid var(--primary-text);
     color: white;
@@ -287,6 +287,10 @@ dialog form p {
     justify-content: space-between;
 }
 
+dialog form p:last-of-type {
+    margin-bottom: 0px;
+}
+
 dialog form ul {
     margin-bottom: 20px;
 }
@@ -294,6 +298,7 @@ dialog form ul {
 dialog form button {
     margin-bottom: 20px;
 }
+
 
 ul, li {
     margin: 0px;

@@ -2,9 +2,15 @@ import svgHelper from "./svgHelper";
 import ContentController from "./ContentController.js";
 import { endOfTomorrow, addWeeks, startOfWeek } from "date-fns";
 import DATE from "./DATE.js";
+import ProjectDialog from "./ProjectDialog.js";
 
 export default function(parent) {
+    
+    const sidebar = document.createElement("div");
+    // the main container
+    sidebar.className="sidebar";
 
+    const projectDialog = ProjectDialog();
 
     const contentContainer = parent.querySelector(".content");
     const contentController = ContentController(contentContainer);
@@ -45,10 +51,6 @@ export default function(parent) {
     }
 
     function load() {
-
-        const sidebar = document.createElement("div");
-        // the main container
-        sidebar.className="sidebar";
     
         const header = createHeader(sidebar);
         sidebar.appendChild(header);
@@ -97,7 +99,10 @@ export default function(parent) {
         ]));
         
         const defaultFolder = create_tab(svgHelper.info("folder", "Default", 0),);
-        const addFolder = create_tab(svgHelper.info("add", "Add Project", ""));
+        const addFolder = create_tab(svgHelper.info("add", "Add Project", 0));
+
+        addFolder.addEventListener("click", addProject);
+
         sidebar.appendChild(createItem("Projects",[
             defaultFolder, addFolder,
         ]));
@@ -108,19 +113,30 @@ export default function(parent) {
         });
 
         tab_lst.push(todayBtn, tomorrowBtn, thisWeekBtn, plannedBtn, completedBtn, defaultFolder);
-    
+
         parent.insertBefore(sidebar, parent.firstChild);
         svgHelper.load();
     }
     
-    
-
-    
-
     function hide(body) {
         if (body.firstChild.className==="sidebar") {
             body.removeChild(body.firstChild);
         }
+    }
+
+    function addProject() {
+        projectDialog.show();
+
+        const confirmBtn = projectDialog.getConfirmBtn();
+
+        function confirmBtn_handler() {
+            const newFolder = create_tab(svgHelper.info("folder", projectDialog.getProjectName(), 0));
+            const itemContent = sidebar.querySelector(".item:last-child .item-content");
+
+            itemContent.insertBefore(newFolder, itemContent.lastChild);
+            confirmBtn.removeEventListener("click", confirmBtn_handler);
+        }
+        confirmBtn.addEventListener("click", confirmBtn_handler);
     }
     
     

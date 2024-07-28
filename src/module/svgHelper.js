@@ -96,6 +96,7 @@ export default {
         const svg_container = document.createElement("div");
         svg_container.className="svg-container";
         svg_container.dataset.type=type;
+        svg_container.innerHTML=this[type];
         return svg_container;
     },
 
