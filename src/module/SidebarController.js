@@ -131,6 +131,11 @@ export default function(parent) {
 
         function confirmBtn_handler() {
             const newFolder = create_tab(svgHelper.info("folder", projectDialog.getProjectName(), 0));
+            tab_lst.push(newFolder);
+            newFolder.addEventListener("click", ()=> {
+                newFolder.className="line active";
+                reset_tab_except(newFolder, tab_lst);
+            })
             const itemContent = sidebar.querySelector(".item:last-child .item-content");
 
             itemContent.insertBefore(newFolder, itemContent.lastChild);
