@@ -2,7 +2,7 @@ import Bulletpoint from "./Bulletpoint.js"
 import svgHelper from "./svgHelper.js";
 import {format} from "date-fns";
 
-export default function(parent, title, date, descriptions, priority, tag="Default") {
+export default function(parent, title, date, descriptions, priority, project) {
 
     // to make the list 1-index
     const bulletpoint_list = [];
@@ -25,8 +25,8 @@ export default function(parent, title, date, descriptions, priority, tag="Defaul
     const container = document.createElement("div");
     container.className="content-item";
     
-    const getTag = () => {
-        return tag;
+    const getProject = () => {
+        return project;
     }
 
     const getDom = () => {
@@ -182,7 +182,7 @@ export default function(parent, title, date, descriptions, priority, tag="Defaul
     return {
         setCompleted,
         getCompleted,
-        getTag,
+        getProject,
         getTitle,
         getDate,
         get,

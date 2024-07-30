@@ -3,6 +3,8 @@ import ContentController from "./ContentController.js";
 import { endOfTomorrow, addWeeks, startOfWeek } from "date-fns";
 import DATE from "./DATE.js";
 import ProjectDialog from "./ProjectDialog.js";
+import ProjectList from "./ProjectList.js";
+import PROJECT from "./PROJECT.js";
 
 export default function(parent) {
     
@@ -16,6 +18,17 @@ export default function(parent) {
     const contentController = ContentController(contentContainer);
     contentController.load();
 
+    const id_generator = (function(){
+        let id = 0;
+        return function() {
+            return id++;
+        }
+    })();
+
+    // list contain all tab
+    const tab_lst = [];
+    // list contain all project object
+    let project_list;
 
     function create_tab(infos) {
         const ret = document.createElement("button");
@@ -41,8 +54,6 @@ export default function(parent) {
         return ret;
     }
 
-    const tab_lst = [];
-
     function reset_tab_except(tab, lst) {
         lst.forEach ((element) => {
             if (tab != element)
@@ -62,29 +73,50 @@ export default function(parent) {
         const plannedBtn = create_tab(svgHelper.info("calendar", "Planned", 0));
         const completedBtn = create_tab(svgHelper.info("checkMark", "Completed", 0));
         
+        
+        const defaultFolder = create_tab(svgHelper.info("folder", "Default", 0),);
+        const addFolder = create_tab(svgHelper.info("add", "Add Project", 0));
+
+        addFolder.addEventListener("click", addProject);
+
+        // parent dom which contain all project
+        const sidebar_item = createItem("Projects",[
+            defaultFolder, addFolder,
+        ]);
+
+        project_list = ProjectList(sidebar_item);
+        const defaultProject= PROJECT("Default", id_generator(), defaultFolder);
+        project_list.add(defaultProject);
+
+        defaultFolder.addEventListener("click", () => {
+            defaultFolder.className="line active";
+            reset_tab_except(defaultFolder, tab_lst);
+            contentController.load_by_project(project_list.getDefault());
+        });
+
         todayBtn.addEventListener("click", () => {
             console.log("Today btn is clicked");
             todayBtn.className="line active";
             reset_tab_except(todayBtn, tab_lst);
-            contentController.load_by_date(DATE.today);
+            contentController.load_by_date(DATE.today, project_list.getDefault());
         });
         tomorrowBtn.addEventListener("click", () => {
             console.log("tomorrow btn is clicked");
             tomorrowBtn.className="line active";
             reset_tab_except(tomorrowBtn, tab_lst);
-            contentController.load_by_date(DATE.tomorrow);
+            contentController.load_by_date(DATE.tomorrow, project_list.getDefault());
         });
         thisWeekBtn.addEventListener("click", () => {
             console.log("this week btn is clicked");
             thisWeekBtn.className="line active";
             reset_tab_except(thisWeekBtn, tab_lst);
-            contentController.load_by_date(DATE.thisWeek);
+            contentController.load_by_date(DATE.thisWeek, project_list.getDefault());
         });
         plannedBtn.addEventListener("click", () => {
             console.log("planned btn is clicked");
             plannedBtn.className="line active";
             reset_tab_except(plannedBtn, tab_lst);
-            contentController.load_by_date(DATE.planned);
+            contentController.load_by_date(DATE.planned, project_list.getDefault());
         });
         completedBtn.addEventListener("click", () => {
             console.log("completed btn is clicked");
@@ -97,21 +129,8 @@ export default function(parent) {
             todayBtn, tomorrowBtn, thisWeekBtn, 
             plannedBtn, completedBtn,
         ]));
-        
-        const defaultFolder = create_tab(svgHelper.info("folder", "Default", 0),);
-        const addFolder = create_tab(svgHelper.info("add", "Add Project", 0));
 
-        addFolder.addEventListener("click", addProject);
-
-        sidebar.appendChild(createItem("Projects",[
-            defaultFolder, addFolder,
-        ]));
-
-        defaultFolder.addEventListener("click", () => {
-            defaultFolder.className="line active";
-            reset_tab_except(defaultFolder, tab_lst);
-        });
-
+        sidebar.appendChild(sidebar_item);
         tab_lst.push(todayBtn, tomorrowBtn, thisWeekBtn, plannedBtn, completedBtn, defaultFolder);
 
         parent.insertBefore(sidebar, parent.firstChild);
@@ -130,15 +149,18 @@ export default function(parent) {
         const confirmBtn = projectDialog.getConfirmBtn();
 
         function confirmBtn_handler() {
-            const newFolder = create_tab(svgHelper.info("folder", projectDialog.getProjectName(), 0));
-            tab_lst.push(newFolder);
-            newFolder.addEventListener("click", ()=> {
-                newFolder.className="line active";
-                reset_tab_except(newFolder, tab_lst);
+            const newProjectTab = create_tab(svgHelper.info("folder", projectDialog.getProjectName(), 0));
+            const newProject = PROJECT(projectDialog.getProjectName(), id_generator(), newProjectTab);
+            project_list.add(newProject);
+            console.log("New project is created with ID: " + newProject.getID());
+            tab_lst.push(newProjectTab);
+            newProjectTab.addEventListener("click", ()=> {
+                newProjectTab.className="line active";
+                reset_tab_except(newProjectTab, tab_lst);
+                contentController.load_by_project(newProject);
             })
             const itemContent = sidebar.querySelector(".item:last-child .item-content");
-
-            itemContent.insertBefore(newFolder, itemContent.lastChild);
+            itemContent.insertBefore(newProjectTab, itemContent.lastChild);
             confirmBtn.removeEventListener("click", confirmBtn_handler);
         }
         confirmBtn.addEventListener("click", confirmBtn_handler);
@@ -195,6 +217,7 @@ export default function(parent) {
     return {
         load,
         hide,
+        project_list,
     }
 }
 

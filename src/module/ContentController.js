@@ -15,19 +15,15 @@ export default function(parent) {
     const DATE_TYPE = 0;
     const PROJECT_TYPE = 1;
     let todoContainer=null;
-    let tag = "Default";
 
-    
-    
-    
+
     function load() {
         // default is to load task that is due by end of today
         load_by_date(DATE.today);
     }
     
 
-    function add_task(pageType, cond) {
-        console.log("add Task is use");
+    function add_task(pageType, project, cond) {
         return function() {
             taskDialog.reset();
             taskDialog.show();
@@ -36,7 +32,7 @@ export default function(parent) {
 
             function confirmBtn_handler() {
                 const newTodo=TODO(todoContainer.getDom(), taskDialog.getTitle(), taskDialog.getDate(),
-                            taskDialog.getDescriptions(), taskDialog.getPriority(), tag);
+                            taskDialog.getDescriptions(), taskDialog.getPriority(), project);
                 
                 newTodo.load();
 
@@ -58,14 +54,19 @@ export default function(parent) {
 
                 confirmBtn.removeEventListener("click", confirmBtn_handler);
 
-                console.log("cond: " + cond);
-                console.log("newTodo meet cond: " + cond(newTodo.getDate()));
                 // if condition is not met, we remove it
                 if ((pageType===DATE_TYPE && !cond(newTodo.getDate())) || 
-                        (pageType===PROJECT_TYPE && newTodo.getTag() != tag)) {
+                        (pageType===PROJECT_TYPE && newTodo.getProject().getID() != project.getID())) {
             
                     todoContainer.getDom().removeChild(newTodo.getDom());
                 } 
+
+                if (pageType === PROJECT_TYPE) {
+                    console.log("project added: " + project.getTitle());
+                }
+
+                console.log("pageType: " + ((pageType === PROJECT_TYPE)? "project type" : "date type"));
+                console.log(pageType);
 
             }
 
@@ -75,7 +76,7 @@ export default function(parent) {
     }
 
 
-    function load_add_btn(pageType, cond) {
+    function load_add_btn(pageType, project, cond) {
         const addBtn = document.createElement("button");
         addBtn.id="add-content-item";
 
@@ -88,7 +89,7 @@ export default function(parent) {
 
         addBtn.appendChild(svg_container);
         addBtn.appendChild(span);
-        addBtn.addEventListener("click", add_task(pageType, cond));
+        addBtn.addEventListener("click", add_task(pageType, project, cond));
         parent.appendChild(addBtn);
     }
 
@@ -113,7 +114,7 @@ export default function(parent) {
         parent.appendChild(btnContainer);
     }
     
-    
+    // load the completed task
     function load_completed() {
         clear();
 
@@ -127,15 +128,14 @@ export default function(parent) {
         });
     }
 
-    function load_by_date(date) {
+    function load_by_date(date, project) {
         clear();
-
         if (date === DATE.today) {
             load_header("Today");
             todoContainer = TodoContainer(parent);
             todoContainer.load();
             // create the add btn
-            load_add_btn(DATE_TYPE, (date) => {
+            load_add_btn(DATE_TYPE, project, (date) => {
                 return isBefore(date,endOfToday(new Date()));
             });
             // get data from all allTasks..
@@ -157,7 +157,7 @@ export default function(parent) {
             }
             
             // create the add btn
-            load_add_btn(DATE_TYPE, (date) => {
+            load_add_btn(DATE_TYPE, project, (date) => {
                 console.log("for tomorrow");
                 return isWithinInterval(date, interval);
             });
@@ -176,7 +176,7 @@ export default function(parent) {
             }
             
             // create the add btn
-            load_add_btn(DATE_TYPE, (date) => {
+            load_add_btn(DATE_TYPE, project, (date) => {
                 console.log("for tomorrow");
                 return isWithinInterval(date, interval);
             });
@@ -191,7 +191,7 @@ export default function(parent) {
             todoContainer = TodoContainer(parent);
             todoContainer.load();
             
-            load_add_btn(DATE_TYPE, (date) => {
+            load_add_btn(DATE_TYPE, project, (date) => {
                 return true;
             });
             // get data from allTasks..
@@ -205,12 +205,24 @@ export default function(parent) {
         svgfile.load();
     }
 
-    function load_by_tag(tag) {
+    function load_by_project(project) {
         // check the tag
+        clear();
 
-        load_header(tag);
+        load_header(project.getTitle());
+        console.log(project.getTitle());
 
-        allTasks.filter();
+        todoContainer = TodoContainer(parent);
+        todoContainer.load();
+
+        console.log(PROJECT_TYPE);
+        load_add_btn(PROJECT_TYPE, project, undefined);
+        
+        console.log(allTasks);
+        allTasks.filter(task => !task.getCompleted() && task.getProject().getID() === project.getID()).forEach((task) => {
+            todoContainer.add(task);
+        });
+
         svgfile.load();
     }
 
@@ -222,7 +234,7 @@ export default function(parent) {
 
     return {
         load_by_date,
-        load_by_tag,
+        load_by_project,
         load_completed,
         load,
         clear,
