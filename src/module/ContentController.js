@@ -7,9 +7,57 @@ import DATE from "./DATE.js";
 
 export default function(parent) {
     
+    const key = "myStorage";
 
     // this contain all TODO for the life time of the program
-    const allTasks = [];
+    let storage=[];
+
+    // if (storageAvailable("localStorage")) {
+    //     const item = JSON.parse(localStorage.getItem(key));
+    //     console.log("item: " + item);
+    //     console.log("item type: " + typeof(item));
+    //     if (item === null) {
+    //         storage = [];
+    //     } else {
+    //         console.log("storage avaiable");
+    //         console.log(item);
+    //         storage = item;
+    //     }
+    // } else  {
+    //     // local storage not avaiable
+    //     console.log("storage not avaiable");
+    //     storage = [];
+    // }
+
+    // function storageAvailable(type) {
+    //     let storage;
+    //     try {
+    //       storage = window[type];
+    //       const x = "__storage_test__";
+    //       storage.setItem(x, x);
+    //       storage.removeItem(x);
+    //       return true;
+    //     } catch (e) {
+    //       return (
+    //         e instanceof DOMException &&
+    //         e.name === "QuotaExceededError" &&
+    //         // acknowledge QuotaExceededError only if there's something already stored
+    //         storage &&
+    //         storage.length !== 0
+    //       );
+    //     }
+    //   }
+
+    //   // save before exit
+    //   window.addEventListener("beforeunload", (event)=> {
+    //     event.preventDefault();    
+    //     localStorage.setItem(JSON.stringify("myExample", storage));
+    //     console.log("example: "  + JSON.parse(localStorage.get("myExample")));
+    //     localStorage.setItem(key, JSON.stringify([]));
+    //   });
+    
+
+
     const taskDialog = TaskDialog();
     
     const DATE_TYPE = 0;
@@ -36,7 +84,7 @@ export default function(parent) {
                 
                 newTodo.load();
 
-                allTasks.push(newTodo);
+                storage.push(newTodo);
 
                 newTodo.getDom().querySelector(".complete-btn").addEventListener("click", () => {
                     newTodo.setCompleted(true);
@@ -44,9 +92,9 @@ export default function(parent) {
                 });
 
                 newTodo.getDom().querySelector(".remove-btn").addEventListener("click", ()=>{
-                    for (let i = 0; i < allTasks.length; ++i) {
-                        if (allTasks[i].getDom() === newTodo.getDom()) {
-                            allTasks.splice(i, 1);
+                    for (let i = 0; i < storage.length; ++i) {
+                        if (storage[i].getDom() === newTodo.getDom()) {
+                            storage.splice(i, 1);
                         }
                     }
                     todoContainer.getDom().removeChild(newTodo.getDom());
@@ -123,7 +171,7 @@ export default function(parent) {
         todoContainer = TodoContainer(parent);
         todoContainer.load();
     
-        allTasks.filter(task => task.getCompleted()).forEach((task) => {
+        storage.filter(task => task.getCompleted()).forEach((task) => {
             todoContainer.add(task);
         });
     }
@@ -138,11 +186,11 @@ export default function(parent) {
             load_add_btn(DATE_TYPE, project, (date) => {
                 return isBefore(date,endOfToday(new Date()));
             });
-            // get data from all allTasks..
+            // get data from all storage..
 
             console.log("loading date...")
-            console.log(allTasks);
-            allTasks.filter(task => !task.getCompleted() && isToday(task.getDate())).forEach((task) => {
+            console.log(storage);
+            storage.filter(task => !task.getCompleted() && isToday(task.getDate())).forEach((task) => {
                 todoContainer.add(task);
             });
 
@@ -161,8 +209,8 @@ export default function(parent) {
                 console.log("for tomorrow");
                 return isWithinInterval(date, interval);
             });
-            // get data from all allTasks..
-            allTasks.filter(task => !task.getCompleted() && isTomorrow(task.getDate())).forEach((task) => {
+            // get data from all storage..
+            storage.filter(task => !task.getCompleted() && isTomorrow(task.getDate())).forEach((task) => {
                 todoContainer.add(task);
             });
         } else if (date === DATE.thisWeek) {
@@ -180,8 +228,8 @@ export default function(parent) {
                 console.log("for tomorrow");
                 return isWithinInterval(date, interval);
             });
-            // get data from allTasks..
-            allTasks.filter(task => !task.getCompleted() && isWithinInterval(task.getDate(), interval)).forEach((task) => {
+            // get data from storage..
+            storage.filter(task => !task.getCompleted() && isWithinInterval(task.getDate(), interval)).forEach((task) => {
                 todoContainer.add(task);
             });
         }  else if (date === DATE.planned) {
@@ -194,8 +242,8 @@ export default function(parent) {
             load_add_btn(DATE_TYPE, project, (date) => {
                 return true;
             });
-            // get data from allTasks..
-            allTasks.filter(task => !task.getCompleted()).forEach((task) => {
+            // get data from storage..
+            storage.filter(task => !task.getCompleted()).forEach((task) => {
                 todoContainer.add(task);
             });
 
@@ -218,8 +266,8 @@ export default function(parent) {
         console.log(PROJECT_TYPE);
         load_add_btn(PROJECT_TYPE, project, undefined);
         
-        console.log(allTasks);
-        allTasks.filter(task => !task.getCompleted() && task.getProject().getID() === project.getID()).forEach((task) => {
+        console.log(storage);
+        storage.filter(task => !task.getCompleted() && task.getProject().getID() === project.getID()).forEach((task) => {
             todoContainer.add(task);
         });
 
